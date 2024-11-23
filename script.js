@@ -1,94 +1,49 @@
-// Dados fictícios para cada plataforma
-const data = {
-    Instagram: {
-      labels: ['Fotos', 'Vídeos', 'Stories', 'Mensagens'],
-      values: [50, 80, 30, 40]
-    },
-    PlayStation: {
-      labels: ['Jogos', 'Online', 'Apps', 'Streaming'],
-      values: [90, 70, 30, 50]
-    },
-    WhatsApp: {
-      labels: ['Mensagens', 'Chamadas', 'Status', 'Arquivos'],
-      values: [100, 50, 40, 60]
-    },
-    Steam: {
-      labels: ['Jogos', 'Amigos', 'Ofertas', 'Streaming'],
-      values: [85, 65, 50, 30]
-    }
-  };
-  
-  // Inicializando o gráfico vazio
-  let platformChart = null;
-  
-  // Função para exibir as informações da plataforma e atualizar o gráfico
-  function showInfo(platform) {
-    const infoBox = document.getElementById('infoBox');
-    const infoBoxTitle = document.querySelector('.info-box h2');
-    const infoBoxContent = document.querySelector('.info-box p');
-  
-    // Atualiza o título e conteúdo da caixa de informações
-    switch(platform) {
-      case 'Instagram':
-        infoBoxTitle.innerHTML = 'Instagram';
-        infoBoxContent.innerHTML = 'Plataforma de compartilhamento de fotos e vídeos.';
-        break;
-      case 'PlayStation':
-        infoBoxTitle.innerHTML = 'PlayStation';
-        infoBoxContent.innerHTML = 'Console de videogame desenvolvido pela Sony.';
-        break;
-      case 'WhatsApp':
-        infoBoxTitle.innerHTML = 'WhatsApp';
-        infoBoxContent.innerHTML = 'Aplicativo de mensagens e chamadas instantâneas.';
-        break;
-      case 'Steam':
-        infoBoxTitle.innerHTML = 'Steam';
-        infoBoxContent.innerHTML = 'Plataforma de distribuição de jogos para PC.';
-        break;
-      default:
-        infoBoxTitle.innerHTML = '';
-        infoBoxContent.innerHTML = '';
-    }
-  
-    // Exibir a caixa de informações
-    infoBox.style.display = 'block';
-  
-    // Obter os dados da plataforma selecionada
-    const platformData = data[platform];
-  
-    // Atualiza o gráfico
-    updateChart(platformData.labels, platformData.values);
-  }
-  
-  // Função para atualizar o gráfico
-  function updateChart(labels, values) {
-    const ctx = document.getElementById('platformChart').getContext('2d');
-  
-    // Se o gráfico já foi inicializado, destrua o gráfico antigo antes de criar um novo
-    if (platformChart) {
-      platformChart.destroy();
-    }
-  
-    // Criar ou atualizar o gráfico
-    platformChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
+const ctx = document.getElementById('platformChart').getContext('2d');
+
+const platformChart = new Chart(ctx, {
+    type: 'bar', // Tipo do gráfico: barras
+    data: {
+        labels: ['Instagram', 'PlayStation', 'WhatsApp', 'Epic Games'], // Nomes das plataformas
         datasets: [{
-          label: 'Uso (%)',
-          data: values,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
+            label: 'Popularidade (%)', // Título do gráfico
+            data: [75, 65, 85, 55], // Dados fictícios de popularidade (em %)
+            backgroundColor: [
+                'rgba(78, 135, 255, 0.7)', // Instagram
+                'rgba(0, 0, 0, 0.7)', // PlayStation
+                'rgba(37, 211, 102, 0.7)', // WhatsApp
+                'rgba(255, 159, 64, 0.7)', // Pic Games
+            ],
+            borderColor: [
+                'rgba(78, 135, 255, 1)', // Instagram
+                'rgba(0, 0, 0, 1)', // PlayStation
+                'rgba(37, 211, 102, 1)', // WhatsApp
+                'rgba(255, 159, 64, 1)', // Pic Games
+            ],
+            borderWidth: 1
         }]
-      },
-      options: {
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.raw + '%';
+                    }
+                }
+            }
+        },
         scales: {
-          y: {
-            beginAtZero: true
-          }
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                    stepSize: 10
+                }
+            }
         }
-      }
-    });
-  }
-  
+    }
+});
